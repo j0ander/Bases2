@@ -1,0 +1,21 @@
+docker cp seed:/etc/scylla C:\Users\ander\OneDrive\Desktop\seed\
+
+creacion normal
+docker run -d --name seed --hostname seed -p 9042:9042 scylladb/scylla --smp 1 --seeds=seed --reactor-backend=epoll
+
+docker run --name scyllaQuito --hostname scyllaQuito -p 9042:9042 -d -v C:\Users\ander\OneDrive\Desktop\seed\scylla:/etc/scylla scylladb/scylla --smp 1 --seeds=scyllaQuito --reactor-backend=epoll
+
+docker run --name scylla-guayaquil1 -d -v C:\Users\torre\OneDrive\Documentos\seed\scylla1:/etc/scylla scylladb/scylla --smp 1 --reactor-backend=epoll --seeds=172.17.0.2
+
+docker run -d --name nodo2 scylladb/scylla --smp 1 --seeds 172.17.0.2 --reactor-backend=epoll
+
+select * from employees.employee_departments_role where departments='R&D' and role='Scientist' 
+
+SELECT COUNT(*) FROM employee_complete_dataset.employees_department_role
+
+nodetool getendpoints keyspace table "partitionkey:partitionkey"
+
+cqlsh
+use keyspace
+desc tables
+ 
