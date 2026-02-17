@@ -1,0 +1,92 @@
+docker cp seed:/etc/scylla C:\Users\ander\OneDrive\Desktop\seed\
+
+
+docker run -d --name seed --hostname seed -p 9042:9042 -v C:\Users\ander\OneDrive\Desktop\seed\scylla:/etc/scylla scylladb/scylla:2025.4.2 --smp 1 --seeds=seed --reactor-backend=epoll
+
+
+docker run -d --name nodo1 --hostname nodo1 -v C:\Users\ander\OneDrive\Desktop\seed\scylla1:/etc/scylla scylladb/scylla:2025.4.2 --smp 1 --seeds=172.17.0.2 --reactor-backend=epoll
+
+CREATE KEYSPACE examen_final
+WITH replication = {
+   'class': 'NetworkTopologyStrategy',
+   'UCE': 1
+};
+
+Consultar todos los jugadores que pertenecen a un equipo por año de participación en dicho equipo, ordenado por la posición de forma ascendente y por temporada de forma descendente.
+
+CREATE TABLE examen_final.jugadores_por_equipo_año(
+	player_name TEXT,
+	player_id TEXT,
+	season INT
+	season_type TEXT,
+	team TEXT,
+	poss INT,
+	raptor_total DOUBLE,
+	war_total DOUBLE,
+	predator_total DOUBLE,
+	pace_impact DOUBLE,
+	PRIMARY KEY ((team,season), poss, season_type, player_id)
+	WITH CLUSTERING ORDER BY (poss ASC, season_type DESC, player_id ASC);
+
+
+CREATE TABLE examen_final.jugadores_por_equipo_anio(player_name TEXT,player_id TEXT,season INT,season_type TEXT,team TEXT,poss INT,raptor_total DOUBLE,war_total DOUBLE,predator_total DOUBLE,pace_impact DOUBLE,PRIMARY KEY ((team,season), poss, season_type, player_id)WITH CLUSTERING ORDER BY (poss ASC, season_type DESC, player_id ASC);
+
+
+
+Consultar todos los jugadores que se ubican en una posición en concreto en cada tipo de temporada, ordenado por año de forma descendente y por equipo de forma ascendente.
+
+CREATE TABLE examen_final.jugadores_por_posicion_temporada(
+	player_name TEXT,
+	player_id TEXT,
+	season INT
+	season_type TEXT,
+	team TEXT,
+	poss INT,
+	raptor_total DOUBLE,
+	war_total DOUBLE,
+	predator_total DOUBLE,
+	pace_impact DOUBLE,
+	PRIMARY KEY ((poss,season_type), season, team, player_id)
+	WITH CLUSTERING ORDER BY (season DESC, team ASC, player_id ASC);
+
+CREATE TABLE examen_final.jugadores_por_posicion_temporada(player_name TEXT,player_id TEXT,season INT,season_type TEXT,team TEXT,poss INT,raptor_total DOUBLE,war_total DOUBLE,predator_total DOUBLE,pace_impact DOUBLE,PRIMARY KEY ((poss,season_type), season, team, player_id)WITH CLUSTERING ORDER BY (season DESC, team ASC, player_id ASC);
+
+
+
+DROP KEYSPACE examen_final;
+
+TRUNCATE jugadores_por_equipo_anio ;
+
+ALTER KEYSPACE examen_final
+WITH replication = {
+   'class': 'NetworkTopologyStrategy',
+   'UCE': 2
+};
+
+nodetool repair
+nodetool cluster repair
+
+
+SELECT count(*) FROM jugadores_por_equipo_anio;
+
+docker ps en NAMES
+docker cp C:\Users\ander\OneDrive\Desktop\Libro1.csv seed:/tmp/Libro1.csv
+
+nodetool getendpoints <keyspace> <tabla> <valores_clave_primaria>
+
+nodetool getendpoints examen_final jugadores_por_equipo_anio "BRK:2018"
+
+nodetool getendpoints examen_final jugadores_por_equipo_anio 'BRK:2018'
+
+
+
+
+
+
+
+
+
+
+
+
+
